@@ -76,7 +76,15 @@ class PatientDischargeDetails(models.Model):
     OtherCharge=models.PositiveIntegerField(null=False)
     total=models.PositiveIntegerField(null=False)
 
+class Prescription(models.Model):   #dr prescrip form#
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    medicine_name = models.CharField(max_length=100)
+    frequency_morning = models.BooleanField(default=False)
+    frequency_afternoon = models.BooleanField(default=False)
+    frequency_night = models.BooleanField(default=False)
+    duration = models.CharField(max_length=20)
+    remarks = models.TextField()
+    created_date = models.DateField(auto_now_add=True)
 
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
+
+

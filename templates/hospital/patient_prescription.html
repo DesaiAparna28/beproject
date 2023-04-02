@@ -1,0 +1,57 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <style type="text/css">
+        a:link {
+            text-decoration: none;
+        }
+
+        h2 {
+            margin-left: 20px;
+            margin-top: 50px;
+        }
+        h5{
+            margin-left: 20px;
+        }
+        .menu {
+      top: 50px;
+    }
+    .prescription-details {
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+.prescription-item{
+    padding: 10px;
+}
+    </style>
+</head>
+<h2>Patient Prescription</h2>
+<h5>Prescriptions for {{ patient }}</h5>
+<div class="prescription-details"></div>
+{% if prescriptions %}
+    <ul>
+        {% for prescription in prescriptions %}
+            <li class="prescription-item">
+                <div><strong>Created Date:</strong> {{ prescription.created_date }}</div>
+                <div><strong>Medicine Name:</strong> {{ prescription.medicine_name }}</div>
+                <div><strong>Frequencies:</strong> {% if prescription.frequency_morning %}Morning {% endif %} {% if prescription.frequency_afternoon %}Afternoon {% endif %} {% if prescription.frequency_night %}Night {% endif %}</div>
+                <div><strong>Duration:</strong> {{ prescription.duration }}</div>
+                <div><strong>Remarks:</strong> {{ prescription.remarks }}</div>
+                
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No prescriptions found for {{ patient }}.</p>
+{% endif %}
+</div>
+<br><br><br><br>
+
+{% endblock content %}

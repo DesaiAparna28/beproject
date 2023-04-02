@@ -27,7 +27,10 @@ class DoctorForm(forms.ModelForm):
         model=models.Doctor
         fields=['address','mobile','department','status','profile_pic']
 
-
+class PrescriptionForm(forms.ModelForm):
+    class Meta:
+        model = models.Prescription
+        fields = ['medicine_name', 'frequency_morning', 'frequency_afternoon', 'frequency_night', 'duration', 'remarks']
 
 #for teacher related form
 class PatientUserForm(forms.ModelForm):

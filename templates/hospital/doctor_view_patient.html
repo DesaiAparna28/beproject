@@ -35,6 +35,8 @@
           <th>Symptoms</th>
           <th>Contact</th>
           <th>Address</th>
+          <th>Prescription</th>
+          <th>Activity</th>
 
         </tr>
       </thead>
@@ -45,6 +47,9 @@
         <td>{{p.symptoms}}</td>
         <td>{{p.mobile}}</td>
         <td>{{p.address}}</td>
+        <!-- <td><a href="/doctor-add-prescrip"><button>Add Prescription</button></a></td> -->
+        <td><a href="{% url 'doctor-add-prescrip' patient_id=p.id %}"><button>Add prescription</button></a></td>
+        <td><a href="/doctor-add-activity"><button>Add Activity</button></a></td>
       </tr>
       {% endfor %}
     </table>
