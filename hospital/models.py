@@ -86,5 +86,15 @@ class Prescription(models.Model):   #dr prescrip form#
     remarks = models.TextField()
     created_date = models.DateField(auto_now_add=True)
 
+class Activity(models.Model):   #dr activity form#
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    exercise_name = models.CharField(max_length=500)
+    frequency_morning = models.BooleanField(default=False)
+    frequency_afternoon = models.BooleanField(default=False)
+    frequency_night = models.BooleanField(default=False)
+    referencelink= models.CharField(max_length=500)
+    detailedexplanation = models.TextField()
+    created_date = models.DateField(auto_now_add=True)
+
 
 

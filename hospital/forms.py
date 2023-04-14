@@ -49,7 +49,10 @@ class PatientForm(forms.ModelForm):
         model=models.Patient
         fields=['address','mobile','status','symptoms','profile_pic']
 
-
+class ActivityForm(forms.ModelForm):
+    class Meta:
+        model = models.Activity
+        fields = ['exercise_name', 'frequency_morning', 'frequency_afternoon', 'frequency_night', 'referencelink', 'detailedexplanation']
 
 class AppointmentForm(forms.ModelForm):
     doctorId=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Doctor Name and Department", to_field_name="user_id")

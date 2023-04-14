@@ -21,7 +21,74 @@
     }
   </style>
 </head>
-<div></div>
+<h2>Patient Activities</h2>
+<h5>Activities for {{ patient }}</h5>
+<div class="prescription-details"></div>
+{% if activities %}
+    <ul>
+        {% for activity in activities %}
+            <li class="prescription-item">
+                <div><strong>Created Date:</strong> {{ activity.created_date }}</div>
+                <div><strong>Exercise Name:</strong> {{ activity.exercise_name }}</div>
+                <div><strong>Frequencies:</strong> {% if activity.frequency_morning %}Morning {% endif %} {% if activity.frequency_afternoon %}Afternoon {% endif %} {% if activity.frequency_night %}Night {% endif %}</div>
+                <div><strong>Reference Links:</strong> {{ activity.referencelink }}</div>
+                <div><strong>Detailed Explanation:</strong> {{ activity.detailedexplanation }}</div>
+                
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No activites found for {{ patient }}.</p>
+{% endif %}
+</div>
+<h3>Add Activity for {{patient.get_name}}</h3>
+  <form class="mx-4 my-4" method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-group ">
+          <label for="{{ form.exercise_name.id_for_label }}" class="font-weight-bold">Exercise Name</label>
+          {{ form.exercise_name }}
+      </div>
+      <div class="form-group">
+          <label for="{{ form.frequency_morning.id_for_label }}" class="font-weight-bold">Frequency</label>
+          <div class="form-check">
+              {{ form.frequency_morning }}
+              <label class="form-check-label mx-2" for="{{ form.frequency_morning.id_for_label }}">
+                Morning
+              </label>
+          </div>
+          <div class="form-check">
+              {{ form.frequency_afternoon }}
+              <label class="form-check-label mx-2" for="{{ form.frequency_afternoon.id_for_label }}">
+                Afternoon
+              </label>
+          </div>
+          <div class="form-check">
+              {{ form.frequency_night }}
+              <label class="form-check-label mx-2" for="{{ form.frequency_night.id_for_label }}">
+                Night
+              </label>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="{{ form.referencelink_for_label }}" class="font-weight-bold">Reference Link</label>
+          {{ form.referencelink }}
+      </div>
+      <div class="form-group">
+          <label for="{{ form.detailedexplanation_for_label }}" class="font-weight-bold">Detailed Explanation</label>
+          {{ form.detailedexplanation }}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+
+{% if activity_added %}
+<script>
+  alert("Activity added successfully.");
+</script>
+{% endif %}
+  
   
 <br><br><br><br><br><br><br>
 

@@ -81,7 +81,7 @@ urlpatterns +=[
     path('doctor-prescription',views.doctor_prescription_view,name='doctor-prescription'),
     ##path('doctor-add-prescrip',views.doctor_add_prescrip_view,name='doctor-add-prescrip'),##
     path('doctor-add-prescrip/<int:patient_id>/', views.doctor_add_prescrip_view, name='doctor-add-prescrip'),
-    path('doctor-add-activity',views.doctor_add_activity_view,name='doctor-add-activity'),
+    path('doctor-add-activity/<int:patient_id>/',views.doctor_add_activity_view,name='doctor-add-activity'),
 
 ]
 
@@ -97,9 +97,8 @@ urlpatterns +=[
     path('patient-view-appointment', views.patient_view_appointment_view,name='patient-view-appointment'),
     path('patient-discharge', views.patient_discharge_view,name='patient-discharge'),
     path('patient-prescription', views.patient_prescription_view,name='patient-prescription'),
+    path('patient-activity', views.patient_activity_view,name='patient-activity'),
 
 ]
 
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
+

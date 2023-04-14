@@ -680,6 +680,7 @@ def doctor_add_prescrip_view(request,patient_id):
     patient = models.Patient.objects.get(id=patient_id)
     patients=models.Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id)
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
+    prescriptions = models.Prescription.objects.filter(patient=patient).order_by('created_date')
     if request.method == 'POST':
         form = forms.PrescriptionForm(request.POST)
         if form.is_valid():
@@ -691,20 +692,37 @@ def doctor_add_prescrip_view(request,patient_id):
             # messages.success(request, 'Prescription added successfully.') # set the success message
             # return redirect('doctor-add-prescrip') # redirect to the same page to display the message
             prescription_added = True
-            return render(request, 'hospital/doctor_add_prescrip.html', {'patients': patients,'patient': patient, 'doctor': doctor, 'form': form, 'prescription_added': prescription_added})            
+            prescriptions = models.Prescription.objects.filter(patient=patient).order_by('created_date')
+            return render(request, 'hospital/doctor_add_prescrip.html', {'patients': patients,'patient': patient, 'doctor': doctor, 'form': form, 'prescription_added': prescription_added, 'prescriptions':prescriptions})            
     else:
         form = forms.PrescriptionForm()
 
-    return render(request, 'hospital/doctor_add_prescrip.html', {'patients': patients, 'patient': patient,'doctor': doctor, 'form': form})
+    return render(request, 'hospital/doctor_add_prescrip.html', {'patients': patients, 'patient': patient,'doctor': doctor, 'form': form, 'prescriptions':prescriptions})
 
 @login_required(login_url='doctorlogin')
 @user_passes_test(is_doctor)
-def doctor_add_activity_view(request):
-    mydict={
-    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
-    }
-    return render(request,'hospital/doctor_add_activity.html',context=mydict)
-
+def doctor_add_activity_view(request,patient_id):
+    patient = models.Patient.objects.get(id=patient_id)
+    patients=models.Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id)
+    doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
+    activities = models.Activity.objects.filter(patient=patient).order_by('created_date')
+    if request.method == 'POST':
+        form = forms.ActivityForm(request.POST)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            # prescription.patient_id = request.POST['patient_id']
+            activity.patient_id = patient_id
+            activity.created_by = request.user
+            activity.save()
+            # messages.success(request, 'Prescription added successfully.') # set the success message
+            # return redirect('doctor-add-prescrip') # redirect to the same page to display the message
+            activity_added = True
+            activities = models.Activity.objects.filter(patient=patient).order_by('created_date')
+            return render(request, 'hospital/doctor_add_activity.html', {'patients': patients,'patient': patient, 'doctor': doctor, 'form': form, 'activity_added': activity_added, 'activities':activities})         
+    else:
+        form = forms.ActivityForm()
+    
+    return render(request,'hospital/doctor_add_activity.html',{'patients': patients,'patient': patient, 'doctor': doctor, 'form': form,'activities':activities})
 
 
 #---------------------------------------------------------------------------------
@@ -879,10 +897,22 @@ def patient_prescription_view(request):
 
     # Retrieve the latest prescription object for the patient
     # latest_prescription = patients.prescription_set.order_by('-created_date').first()
-    prescriptions = models.Prescription.objects.filter(patient=patient).order_by('-created_date')
+    prescriptions = models.Prescription.objects.filter(patient=patient).order_by('created_date')
 
     return render(request, 'hospital/patient_prescription.html',{'patients': patients, 'patient': patient, 'prescriptions': prescriptions})
 
+@login_required(login_url='patientlogin')
+@user_passes_test(is_patient)
+def patient_activity_view(request):
+    patients=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
+    # Retrieve the patient object for the currently logged-in user
+    patient = models.Patient.objects.get(user=request.user)
+
+    # Retrieve the latest prescription object for the patient
+    # latest_prescription = patients.prescription_set.order_by('-created_date').first()
+    activities = models.Activity.objects.filter(patient=patient).order_by('created_date')
+
+    return render(request, 'hospital/patient_activity.html',{'patients': patients, 'patient': patient, 'activities': activities})
 #------------------------ PATIENT RELATED VIEWS END ------------------------------
 #---------------------------------------------------------------------------------
 
